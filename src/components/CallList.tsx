@@ -55,7 +55,8 @@ const CallList = ({ type }: { type: "upcoming" | "ended" | "recordings" }) => {
         .filter((call) => call.recordings.length > 0)
         .flatMap((call) => call.recordings);
 
-        setrecordings(recordings);
+        setrecordings(recordings as CallRecording[]); 
+);
     };
 
     if (type === 'recordings') {
