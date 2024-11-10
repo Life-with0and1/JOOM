@@ -54,8 +54,12 @@ const CallList = ({ type }: { type: "upcoming" | "ended" | "recordings" }) => {
       const recordings = callData
         .filter((call) => call.recordings.length > 0)
         .flatMap((call) => call.recordings);
+ const normalizedRecordings = recordings.map((recording) => ({
+    ...recording,
+    end_time: new Date(recording.end_time), 
+  }));
 
-        setrecordings(recordings as CallRecording[]); 
+  setrecordings(normalizedRecordings as unknown as CallRecording[]); 
     };
 
     if (type === 'recordings') {
