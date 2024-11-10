@@ -1,5 +1,5 @@
 import MeetingTypeList from "@/components/MeetingTypeList";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Home = () => {
   const current = new Date();
