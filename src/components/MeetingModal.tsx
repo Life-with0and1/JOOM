@@ -16,6 +16,7 @@ interface MeetingModalProps {
   handleClick?: () => void;
   buttonText?: string;
   image?: string;
+  buttonClassName?: string;
   buttonIcon?: string;
 }
 
