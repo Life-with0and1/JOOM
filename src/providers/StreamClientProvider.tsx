@@ -1,6 +1,6 @@
 "use client";
 
-import type { tokenProvider } from "@/actions/stream.action";
+import { tokenProvider } from "@/actions/stream.action";
 import Loader from "@/components/Loader";
 import { useUser } from "@clerk/nextjs";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
