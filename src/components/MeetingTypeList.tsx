@@ -55,9 +55,14 @@ const MeetingTypeList = () => {
       if (!value.description) router.push(`/meeting/${call.id}`);
 
       toast({ title: "Meeting created" });
-    } catch () {
-      toast({ title: "Failed to create meeting" });
-    }
+    }catch (error) {
+  if (error.response && error.response.status === 400) {
+    toast({ title: "Validation failed", description: "Please check the input fields." });
+  } else {
+    toast({ title: "Failed to create meeting", description: "Please try again later." });
+  }
+}
+
   };
 
   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`;
