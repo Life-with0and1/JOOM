@@ -76,12 +76,11 @@ return (
   <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
     {call && call.length > 0 ? (
       call.map((meeting: Call | CallRecording) => {
-        // Check if the meeting is a Call or a CallRecording and access properties accordingly
         const meetingId = 'id' in meeting ? (meeting as Call).id : (meeting as CallRecording).filename;
         
         return (
           <MeetingCard
-            key={meetingId} // Use `meetingId` as the key
+            key={meetingId}
             icon={
               type === "ended"
                 ? "/icons/previous.svg"
@@ -94,10 +93,11 @@ return (
                 ? (meeting as Call).state?.custom?.description || "No Description"
                 : (meeting as CallRecording).filename?.substring(0, 20) || "No Description"
             }
+            // Add a fallback to prevent undefined from being passed
             date={
               'state' in meeting
-                ? (meeting as Call).state?.startsAt?.toLocaleString()
-                : (meeting as CallRecording).start_time?.toLocaleString()
+                ? (meeting as Call).state?.startsAt?.toLocaleString() || "No Date"
+                : (meeting as CallRecording).start_time?.toLocaleString() || "No Date"
             }
             isPreviousMeeting={type === "ended"}
             link={
@@ -122,8 +122,6 @@ return (
     )}
   </div>
 );
-
-
 };
 
 export default CallList;
