@@ -54,12 +54,13 @@ const CallList = ({ type }: { type: "upcoming" | "ended" | "recordings" }) => {
       const recordings = callData
         .filter((call) => call.recordings.length > 0)
         .flatMap((call) => call.recordings);
- const normalizedRecordings = recordings.map((recording) => ({
-    ...recording,
-    end_time: new Date(recording.end_time), 
-  }));
 
-  setrecordings(normalizedRecordings as unknown as CallRecording[]); 
+      const normalizedRecordings = recordings.map((recording) => ({
+        ...recording,
+        end_time: new Date(recording.end_time), 
+      }));
+
+      setrecordings(normalizedRecordings as unknown as CallRecording[]); 
     };
 
     if (type === 'recordings') {
@@ -74,10 +75,10 @@ const CallList = ({ type }: { type: "upcoming" | "ended" | "recordings" }) => {
 
   return (
     <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-      {call && call.length > 0 ? (
+      {call.length > 0 ? (
         call.map((meeting: Call | CallRecording) => (
           <MeetingCard
-            key={(meeting as Call).id}
+            key={(meeting as Call | CallRecording).id}
             icon={
               type === "ended"
                 ? "/icons/previous.svg"
@@ -86,31 +87,28 @@ const CallList = ({ type }: { type: "upcoming" | "ended" | "recordings" }) => {
                 : "/icons/recordings.svg"
             }
             title={
-              (meeting as Call).state?.custom?.description ||
-              (meeting as CallRecording).filename?.substring(0, 20) ||
-              "No Description"
+              'state' in meeting
+                ? (meeting as Call).state?.custom?.description || "No Description"
+                : (meeting as CallRecording).filename?.substring(0, 20) || "No Description"
             }
             date={
-              (meeting as Call).state?.startsAt?.toLocaleString() ||
-              (meeting as CallRecording).start_time?.toLocaleString()
+              'state' in meeting
+                ? (meeting as Call).state?.startsAt?.toLocaleString()
+                : (meeting as CallRecording).start_time?.toLocaleString()
             }
             isPreviousMeeting={type === "ended"}
             link={
               type === "recordings"
                 ? (meeting as CallRecording).url
-                : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${
-                    (meeting as Call).id
-                  }`
+                : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${(meeting as Call).id}`
             }
-            buttonIcon1 = type === "recordings" ? "/icons/play.svg" : "";
+            buttonIcon1={type === "recordings" ? "/icons/play.svg" : ""}
             buttonText={type === "recordings" ? "Play" : "Start"}
             handleClick={
               type === "recordings"
-                ? () =>{
-                  console.log(callRecordings)
-                  
-                   router.push(`${(meeting as CallRecording).url}`)
-                }
+                ? () => {
+                    router.push(`${(meeting as CallRecording).url}`);
+                  }
                 : () => router.push(`/meeting/${(meeting as Call).id}`)
             }
           />
