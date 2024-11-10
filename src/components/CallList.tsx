@@ -102,7 +102,7 @@ const CallList = ({ type }: { type: "upcoming" | "ended" | "recordings" }) => {
                     (meeting as Call).id
                   }`
             }
-            buttonIcon1={type === "recordings" ? "/icons/play.svg" : undefined}
+            buttonIcon1 = type === "recordings" ? "/icons/play.svg" : "";
             buttonText={type === "recordings" ? "Play" : "Start"}
             handleClick={
               type === "recordings"
