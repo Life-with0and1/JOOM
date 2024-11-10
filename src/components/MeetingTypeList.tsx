@@ -56,11 +56,8 @@ const MeetingTypeList = () => {
 
       toast({ title: "Meeting created" });
     }catch (error) {
-  if (error.response && error.response.status === 400) {
-    toast({ title: "Validation failed", description: "Please check the input fields." });
-  } else {
+      console.log(error);
     toast({ title: "Failed to create meeting", description: "Please try again later." });
-  }
 }
 
   };
